@@ -6,7 +6,7 @@
 /*   By: cmehay <cmehay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/09 13:48:38 by cmehay            #+#    #+#             */
-/*   Updated: 2014/02/09 22:48:41 by cmehay           ###   ########.fr       */
+/*   Updated: 2014/02/09 23:27:43 by cmehay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,9 @@ t_bool					checksum(t_bit *bits, t_stock *stock)
 
 	str = put_in_str(bits);
 	crc8 = hr_crc32((char*)str.str, ft_strlen((char*)str.str), 0, TRUE);
+	ft_putendl((char*)str.str);
 	if (crc8 == (t_crc)str.crc8)
-	{
-		ft_putendl((char*)str.str);
-		rtn = TRUE;
-	}
-	else
-		rtn = FALSE;
+	rtn = TRUE;
 	free(str.str);
 	reset_str(bits);
 	stock->bit = NULL;
