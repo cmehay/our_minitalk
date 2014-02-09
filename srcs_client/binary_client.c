@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   binary_client.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmehay <cmehay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/02/07 21:38:15 by cmehay            #+#    #+#             */
-/*   Updated: 2014/02/09 17:55:43 by cmehay           ###   ########.fr       */
+/*   Created: 2014/02/09 20:45:11 by cmehay            #+#    #+#             */
+/*   Updated: 2014/02/09 21:33:11 by cmehay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int		main(void)
+void	reverse(int *bin, int size)
 {
-	pid_t		pid;
-	t_sigaction	act;
+	int	*tmp;
+	int	i;
 
-	act.sa_sigaction = cb_sigusr_server;
-	act.sa_flags |= SA_SIGINFO;
-	act.sa_flags &= ~SA_RESETHAND;
-	pid = getpid();
-	sigaction(SIGUSR1, &act, NULL);
-	sigaction(SIGUSR2, &act, NULL);
-	ft_putstr("Pid: ");
-	ft_putnbr(pid);
-	ft_putchar('\n');
-	ft_putendl("Server is running...");
-	while (1)
-		pause();
-	ft_putendl("exit");
-	return (0);
+	tmp = (int*)safe_malloc(sizeof(int) * size);
+	i = size;
+	while (size--)
+		*tmp++ = bin[size];
+	while (i--)
+		bin[i] = *(--tmp);
+	free(tmp);
 }

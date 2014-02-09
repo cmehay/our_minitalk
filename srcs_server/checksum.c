@@ -6,7 +6,7 @@
 /*   By: cmehay <cmehay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/09 13:48:38 by cmehay            #+#    #+#             */
-/*   Updated: 2014/02/09 16:12:15 by cmehay           ###   ########.fr       */
+/*   Updated: 2014/02/09 22:48:41 by cmehay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,8 @@ static unsigned char	bin_to_char(t_bit *bits)
 	return (bin);
 }
 
-static t_str			put_in_str(t_bit *bits)
+static t_bit			*find_char(t_bit *tmp, unsigned char *str)
 {
-	t_bit			*tmp;
-	t_str			rtn;
-	unsigned char	*str;
-
-	tmp = bits;
-	while (tmp)
-		tmp = tmp->next;
-	str = (unsigned char*)safe_malloc(sizeof(unsigned char) * (tmp->idx / 8));
-	rtn.str = str;
-	tmp = bits;
 	while (tmp)
 	{
 		if (tmp->idx > 0 && !(tmp->idx % 8))
@@ -57,6 +47,26 @@ static t_str			put_in_str(t_bit *bits)
 		}
 		tmp = tmp->next;
 	}
+	return (tmp);
+}
+
+static t_str			put_in_str(t_bit *bits)
+{
+	t_bit			*tmp;
+	t_str			rtn;
+	unsigned char	*str;
+	int				i;
+
+	tmp = bits;
+	while (tmp->next)
+		tmp = tmp->next;
+	str = (unsigned char*)
+		safe_malloc(sizeof(unsigned char) * ((tmp->idx + 1) / 8));
+	rtn.str = str;
+	tmp = find_char(bits, str);
+	i = 0;
+	while (i++ < 7)
+		tmp = tmp->next;
 	rtn.crc8 = bin_to_char(tmp->next);
 	return (rtn);
 }

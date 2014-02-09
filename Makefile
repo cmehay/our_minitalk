@@ -18,7 +18,7 @@ HEADDIR = includes
 HEAD = minitalk.h
 HEADFILES = $(addprefix $(HEADDIR)/, $(HEAD))
 SRC_CLIENT = main_client.c crc32_client.c exit_client.c mem_proc_client.c \
-	signals_client.c singleton_client.c
+	signals_client.c singleton_client.c binary_client.c
 SRC_SERVER = main.c checksum.c crc32.c mem_proc.c singleton.c signals.c exit.c
 SRCFILES_CLIENT = $(addprefix $(SRCDIR_CLIENT)/, $(SRC_CLIENT))
 SRCFILES_SERVER = $(addprefix $(SRCDIR_SERVER)/, $(SRC_SERVER))

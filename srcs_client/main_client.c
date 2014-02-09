@@ -6,13 +6,13 @@
 /*   By: cmehay <cmehay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/08 21:38:23 by cmehay            #+#    #+#             */
-/*   Updated: 2014/02/09 16:21:56 by cmehay           ###   ########.fr       */
+/*   Updated: 2014/02/09 23:16:55 by cmehay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void add_begin_end(int *array, int len, t_bool begin)
+static void	add_begin_end(int *array, int len, t_bool begin)
 {
 	int		i;
 	int		shift;
@@ -29,12 +29,10 @@ static void	add_checksum(int *array, char *str, int len)
 	int		i;
 
 	crc8 = hr_crc32(str, len, 0, TRUE);
-	i = -1;
-	while (++i < 8)
-	{
-		crc8 >>= 1;
-		array[i + (len + 2) * 8] = (crc8 & 1);
-	}
+	i = 7;
+	while (--i >= 0)
+		array[i + (len + 2) * 8] = (crc8 & (1 << i)) ? 1 : 0;
+	reverse(&(array[i + (len + 2) * 8]) + 1, 8);
 }
 
 static int	*to_signal(char *str, int len)
@@ -46,14 +44,12 @@ static int	*to_signal(char *str, int len)
 	rtn = (int*)safe_malloc(sizeof(int) * (len + 6) * 8);
 	j = -1;
 	add_begin_end(rtn, len, TRUE);
-	while (str[j++])
+	while (str[++j])
 	{
-		i = -1;
-		while (++i < 8)
-		{
-			str[j] >>= 1;
-			rtn[i + (j + 1) * 8] = (str[j] & 1);
-		}
+		i = 7;
+		while (--i >= 0)
+			rtn[i + (j + 1) * 8] = (str[j] & (1 << i)) ? 1 : 0;
+		reverse(&(rtn[i + (j + 1) * 8]) + 1, 8);
 	}
 	add_checksum(rtn, str, len);
 	add_begin_end(rtn, len, FALSE);
@@ -69,7 +65,7 @@ static void	send_to_server(pid_t pid, char *str, int *sig)
 	len = ft_strlen(str);
 	signals = (sig) ? sig : to_signal(str, len);
 	i = -1;
-	while (++i < (len + 5) * 8)
+	while (++i < (len + 6) * 8)
 	{
 		if (signals[i])
 		{
@@ -83,6 +79,7 @@ static void	send_to_server(pid_t pid, char *str, int *sig)
 		}
 		pause();
 	}
+	usleep(100);
 	if (!gimme_status(NULL))
 		send_to_server(pid, str, signals);
 }

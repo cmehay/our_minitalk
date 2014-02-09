@@ -6,7 +6,7 @@
 /*   By: cmehay <cmehay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/07 21:46:16 by cmehay            #+#    #+#             */
-/*   Updated: 2014/02/09 16:16:20 by cmehay           ###   ########.fr       */
+/*   Updated: 2014/02/09 20:55:41 by cmehay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ void	cb_sigusr(int sig);
 ** singleton.c
 */
 t_bool	gimme_status(t_bool *status);
+
+/*
+** binary_client
+*/
+void	reverse(int *bin, int size);
 
 /*
 ** Serveur
