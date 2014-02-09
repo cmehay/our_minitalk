@@ -6,11 +6,11 @@
 /*   By: cmehay <cmehay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/14 04:40:57 by cmehay            #+#    #+#             */
-/*   Updated: 2013/12/15 10:01:14 by sbethoua         ###   ########.fr       */
+/*   Updated: 2014/02/09 15:48:34 by cmehay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hotrace.h"
+#include "minitalk.h"
 
 void		hr_crc_init_32(t_crc *table)
 {
@@ -53,16 +53,3 @@ t_hash		hr_crc32(const char *str, int size, int shift, t_bool reduce)
 	return (crc ^ ~0U);
 }
 
-uint64_t	 set_tab_len(int reduce)
-{
-	int 		base;
-	int 		i;
-	uint64_t	rtn;
-
-	base = 2;
-	rtn = base;
-	i = 0;
-	while (++i < reduce)
-		rtn *= base;
-	return (rtn);
-}

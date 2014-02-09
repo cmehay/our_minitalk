@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmehay <cmehay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/02/07 21:38:15 by cmehay            #+#    #+#             */
-/*   Updated: 2014/02/09 16:35:03 by cmehay           ###   ########.fr       */
+/*   Created: 2014/02/08 21:42:19 by cmehay            #+#    #+#             */
+/*   Updated: 2014/02/09 11:54:41 by cmehay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int		main(void)
+void	cb_sigusr(int sig)
 {
-	pid_t		pid;
-	t_sigaction	act;
+	t_bool	set;
 
-	act.sa_sigaction = cb_sigusr_server;
-	act.sa_flags |= SA_SIGINFO;
-	act.sa_flags &= ~SA_RESETHAND;
-	pid = getpid();
-	sigaction(SIGUSR1, &act, NULL);
-	sigaction(SIGUSR2, &act, NULL);
-	ft_putstr("Pid: ");
-	ft_putnbr(pid);
-	ft_putchar('\n');
-	ft_putendl("Server is running...");
-	while (1)
-		pause();
-	ft_putendl("exit");
-	return (0);
+	if (sig == SIGUSR1)
+		set = FALSE;
+	if (sig == SIGUSR2)
+		set = TRUE;
+	gimme_status(&set);
 }

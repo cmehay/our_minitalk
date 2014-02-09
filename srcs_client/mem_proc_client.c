@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mem_proc_client.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmehay <cmehay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/02/07 21:38:15 by cmehay            #+#    #+#             */
-/*   Updated: 2014/02/09 16:35:03 by cmehay           ###   ########.fr       */
+/*   Created: 2014/02/07 22:32:29 by cmehay            #+#    #+#             */
+/*   Updated: 2014/02/09 16:18:02 by cmehay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int		main(void)
+void	*safe_malloc(size_t len)
 {
-	pid_t		pid;
-	t_sigaction	act;
+	void	*alloc;
 
-	act.sa_sigaction = cb_sigusr_server;
-	act.sa_flags |= SA_SIGINFO;
-	act.sa_flags &= ~SA_RESETHAND;
-	pid = getpid();
-	sigaction(SIGUSR1, &act, NULL);
-	sigaction(SIGUSR2, &act, NULL);
-	ft_putstr("Pid: ");
-	ft_putnbr(pid);
-	ft_putchar('\n');
-	ft_putendl("Server is running...");
-	while (1)
-		pause();
-	ft_putendl("exit");
-	return (0);
+	if (!(alloc = ft_memalloc(len)))
+		exit_hook(ERR_MALLOC);
+	return (alloc);
 }
